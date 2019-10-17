@@ -1,0 +1,58 @@
+pipeline{
+    agent any
+    stages{
+        stage("LoadingSource"){
+            steps{
+                echo "====++++Cloning from GitHub++++===="
+                powershell(returnStdout: false, script:''' 
+                    $ProjectDir = "pacman"
+                    $ProjectGit = "https://github.com/adrianeyre/pacman.git"
+
+                    $ForClean = Test-Path -Path $ProjectDir
+                    if($ForClean -eq "True")
+                    {   
+                        Write-Output "Cleaning local repo..."
+                        Remove-Item -Path $ProjectDir -Recurse -Force
+                        Write-Output "Clean complete"
+                    }
+
+                    git clone $ProjectGit   
+                ''')
+
+                echo "====++++Creating build.ps1++++===="
+                powershell 'Set-Location pacman\\'
+                powershell 'Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1'
+                powershell 'Set-ExecutionPolicy RemoteSigned -Scope Process'
+                powershell 'Set-ExecutionPolicy RemoteSigned -Scope LocalMachine'
+            }
+        }        
+        stage("Build"){
+            steps{
+                echo "========executing Build========"
+                powershell '.\\build.ps1'
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
+            }
+        }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
+}
