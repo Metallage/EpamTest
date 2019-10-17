@@ -20,16 +20,28 @@ pipeline{
                 ''')
 
                 echo "====++++Creating build.ps1++++===="
-                powershell 'Set-Location pacman\\'
-                powershell 'Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1'
-                powershell 'Set-ExecutionPolicy RemoteSigned -Scope Process'
-                powershell 'Set-ExecutionPolicy RemoteSigned -Scope LocalMachine'
+                powershell (returnStdout: false, script: '''
+                
+                    $CakeFile ="build.cake"
+                    $IsExists = Test-Path -Path $CakeFile
+
+                    if($IsExists -ne "True")
+                    {
+                    # Write-Output "${CakeFile} не найден!!!"
+                        trow "${CakeFile} не найден!!!" 
+                        exit 1
+                    }
+                    else 
+                    {
+                        Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1    
+                    }
+                ''')
             }
         }        
         stage("Build"){
             steps{
                 echo "========executing Build========"
-                powershell '.\\build.ps1'
+                powershell(returnStdout: false, script:  '.\\build.ps1')
             }
             post{
                 always{

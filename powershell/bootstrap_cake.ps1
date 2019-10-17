@@ -1,12 +1,12 @@
-$CakeDir = "cake"
-$CakeFile = $CakeDir + "\build.cake"
+
+$CakeFile ="build.cake"
 $IsExists = Test-Path -Path $CakeFile
 
 if($IsExists -ne "True")
 {
    # Write-Output "${CakeFile} не найден!!!"
-   # ThrowError -ExceptionName "FileNotFound" -ExceptionMessage "${CakeFile} не найден!!!" -errorId 
-    Write-Error "${CakeFile} не найден!!!"
+    trow "${CakeFile} не найден!!!" 
+    exit 1
 }
 else 
 {

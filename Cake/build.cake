@@ -5,7 +5,7 @@
 using CakeSettingsHelper
 
 
-var settingsFile = "set.json";
+var settingsFile = "Settings.json";
 var configuration = Argument("configuration", "Debug");
 
 
@@ -16,7 +16,7 @@ var projectOutput="";
 
 Task("LoadConfig")
 .Does(()=>{
-   SettingsHelper mysettings = new SettingsHelper("set.json");
+   SettingsHelper mysettings = new SettingsHelper(settingsFile);
    projectOutput = mysettings.GetSettingValue("OutputDir");
     if(projectOutput == null)
     {
@@ -39,13 +39,13 @@ Task("Clean")
 Task("RestoreNugets")
 .IsDependentOn("Clean")
 .Does(() =>{
-    NuGetRestore("Pacman.sln");
+    NuGetRestore(@"pacman\Pacman.sln");
 });
 
 Task("Build")
 .IsDependentOn("RestoreNugets")
 .Does(() =>{
-    MSBuild("Pacman.sln", x => x
+    MSBuild(@"pacman\Pacman.sln", x => x
     .SetConfiguration(configuration)
     .SetVerbosity(Verbosity.Minimal)
     .WithTarget("build")
@@ -56,15 +56,15 @@ Task("Build")
 Task("RunTests")
 .IsDependentOn("Build")
 .Does(()=>{
- NUnit3(@"UnitTests\bin\" + configuration + @"\UnitTests.dll");
+ NUnit3(@"pacman\UnitTests\bin\" + configuration + @"\UnitTests.dll");
 });
 
 Task("Output")
 .IsDependentOn("RunTests")
 .Does(()=>{
-    CopyFiles(@"Pacman\bin\" + configuration + @"\*.dll", projectOutput);
-    CopyFiles(@"Pacman\bin\" + configuration + @"\*.pdb", projectOutput);
-    CopyFiles(@"Pacman\bin\" + configuration + @"\*.exe", projectOutput);
-    CopyFiles(@"Pacman\bin\" + configuration + @"\*.config", projectOutput);
+    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.dll", projectOutput);
+    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.pdb", projectOutput);
+    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.exe", projectOutput);
+    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.config", projectOutput);
 });
 RunTarget("Output");
