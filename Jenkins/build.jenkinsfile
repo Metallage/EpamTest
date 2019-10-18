@@ -55,6 +55,11 @@ pipeline{
                 }
             }
         }
+        stage("Publish test reports"){
+            steps{
+                nunit testResultsPattern: 'TestResult.xml'
+            }
+        }
     }
     post{
         always{
