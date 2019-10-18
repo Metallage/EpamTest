@@ -1,7 +1,7 @@
 
 
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.6.0
-#r EpamTest\project\CakeSettingsHelper.dll
+#r CakeSettingsHelper.dll
 using CakeSettingsHelper
 
 
