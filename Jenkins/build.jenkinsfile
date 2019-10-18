@@ -5,8 +5,8 @@ pipeline{
             steps{
                 echo "====++++Cloning from GitHub++++===="
                 powershell(returnStdout: false, script:''' 
-                    $ProjectDir = "pacman"
-                    $ProjectGit = "https://github.com/adrianeyre/pacman.git"
+                    $ProjectDir = "EpamTest"
+                    $ProjectGit = "https://github.com/metallage/epamtest.git"
 
                     $ForClean = Test-Path -Path $ProjectDir
                     if($ForClean -eq "True")
@@ -19,29 +19,19 @@ pipeline{
                     git clone $ProjectGit   
                 ''')
 
-                echo "====++++Creating build.ps1++++===="
-                powershell (returnStdout: false, script: '''
-                
-                    $CakeFile ="build.cake"
-                    $IsExists = Test-Path -Path $CakeFile
 
-                    if($IsExists -ne "True")
-                    {
-                    # Write-Output "${CakeFile} не найден!!!"
-                        trow "${CakeFile} не найден!!!" 
-                        exit 1
-                    }
-                    else 
-                    {
-                        Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1    
-                    }
-                ''')
+            }
+        }
+        stage("Preparing Cake")        {
+            steps{
+                echo "====++++Creating build.ps1++++===="
+                powershell (returnStdout: false, script: '.\\EpamTest\\powershell\\bootstrap_cake.ps1')
             }
         }        
         stage("Build"){
             steps{
                 echo "========executing Build========"
-                powershell(returnStdout: false, script:  '.\\build.ps1')
+                powershell(returnStdout: false, script:  '.\\EpamTest\\\\cake\\build.ps1 -Script ".\\EpamTest\\\\cake\\build.cake"')
             }
             post{
                 always{

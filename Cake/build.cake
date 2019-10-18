@@ -5,7 +5,7 @@
 using CakeSettingsHelper
 
 
-var settingsFile = "Settings.json";
+var settingsFile = @"EpamTest\cake\Settings.json";
 var configuration = Argument("configuration", "Debug");
 
 
@@ -39,7 +39,7 @@ Task("Clean")
 Task("RestoreNugets")
 .IsDependentOn("Clean")
 .Does(() =>{
-    NuGetRestore(@"pacman\Pacman.sln");
+    NuGetRestore(@"EpamTest\project\Pacman.sln");
 });
 
 Task("Build")
@@ -56,15 +56,15 @@ Task("Build")
 Task("RunTests")
 .IsDependentOn("Build")
 .Does(()=>{
- NUnit3(@"pacman\UnitTests\bin\" + configuration + @"\UnitTests.dll");
+ NUnit3(@"EpamTest\project\UnitTests\bin\" + configuration + @"\UnitTests.dll");
 });
 
 Task("Output")
 .IsDependentOn("RunTests")
 .Does(()=>{
-    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.dll", projectOutput);
-    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.pdb", projectOutput);
-    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.exe", projectOutput);
-    CopyFiles(@"pacman\Pacman\bin\" + configuration + @"\*.config", projectOutput);
+    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.dll", projectOutput);
+    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.pdb", projectOutput);
+    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.exe", projectOutput);
+    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.config", projectOutput);
 });
 RunTarget("Output");

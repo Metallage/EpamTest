@@ -1,15 +1,26 @@
+$CakeFiles = @("build.cake", "Settings.json", "CakeSettingsHelper.dll", "CakeSettingsHelper.deps.json")
+$CakeDir = "EpamTest\\cake"
 
-$CakeFile ="build.cake"
-$IsExists = Test-Path -Path $CakeFile
+$DirExists = Test-Path -Path $CakeDir
 
-if($IsExists -ne "True")
+if($DirExists -eq "True")
 {
-   # Write-Output "${CakeFile} не найден!!!"
-    trow "${CakeFile} не найден!!!" 
-    exit 1
+    Set-Location $CakeDir
+
+    foreach ($Cakefile in $CakeFiles) 
+    {
+        $FileExists = Test-Path -Path $CakeFile
+        if($FileExists -ne "True")
+        {
+            trow "${CakeFile} не найден!!!" 
+            exit 1
+        }
+    }
+
+    Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1    
 }
 else 
 {
-    Set-Location $CakeDir
-    Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1    
+    trow "${CakeDir} не обнаружена!!!" 
+    exit 1
 }
