@@ -47,7 +47,8 @@ pipeline{
         }
         stage("Publish test reports"){
             steps{
-                nunit testResultsPattern: 'epampest\\cake\\TestResult.xml'
+                echo "Serching in 'epamtest\\Cake\\TestResult.xml'"
+                nunit testResultsPattern: 'epamtest\\Cake\\TestResult.xml'
             }
         }
     }
