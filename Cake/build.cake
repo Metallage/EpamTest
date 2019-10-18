@@ -56,7 +56,7 @@ Task("Build")
 Task("RunTests")
 .IsDependentOn("Build")
 .Does(()=>{
- NUnit3(@"EpamTest\project\UnitTests\bin\" + configuration + @"\UnitTests.dll");
+ NUnit3(@"..\project\UnitTests\bin\" + configuration + @"\UnitTests.dll");
 });
 
 Task("Output")
