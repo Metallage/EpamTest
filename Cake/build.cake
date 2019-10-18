@@ -39,13 +39,13 @@ Task("Clean")
 Task("RestoreNugets")
 .IsDependentOn("Clean")
 .Does(() =>{
-    NuGetRestore(@"EpamTest\project\Pacman.sln");
+    NuGetRestore(@"..\project\Pacman.sln");
 });
 
 Task("Build")
 .IsDependentOn("RestoreNugets")
 .Does(() =>{
-    MSBuild(@"pacman\Pacman.sln", x => x
+    MSBuild(@"..\project\Pacman.sln", x => x
     .SetConfiguration(configuration)
     .SetVerbosity(Verbosity.Minimal)
     .WithTarget("build")
@@ -62,9 +62,9 @@ Task("RunTests")
 Task("Output")
 .IsDependentOn("RunTests")
 .Does(()=>{
-    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.dll", projectOutput);
-    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.pdb", projectOutput);
-    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.exe", projectOutput);
-    CopyFiles(@"EpamTest\project\Pacman\bin\" + configuration + @"\*.config", projectOutput);
+    CopyFiles(@"..\project\Pacman\bin\" + configuration + @"\*.dll", projectOutput);
+    CopyFiles(@"..\project\Pacman\bin\" + configuration + @"\*.pdb", projectOutput);
+    CopyFiles(@"..\project\Pacman\bin\" + configuration + @"\*.exe", projectOutput);
+    CopyFiles(@"..\project\Pacman\bin\" + configuration + @"\*.config", projectOutput);
 });
 RunTarget("Output");
