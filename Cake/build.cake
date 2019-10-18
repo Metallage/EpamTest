@@ -1,11 +1,11 @@
 
 
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.6.0
-#r CakeSettingsHelper.dll
+#r EpamTest\project\CakeSettingsHelper.dll
 using CakeSettingsHelper
 
 
-var settingsFile = @"EpamTest\cake\Settings.json";
+var settingsFile = @"Settings.json";
 var configuration = Argument("configuration", "Debug");
 
 
