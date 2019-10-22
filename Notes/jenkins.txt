@@ -1,1 +1,7 @@
 в jenkins поставить плагин nunit
+
+Ќе работает на PowerShell 2.0. с 5.1 работает, (Windows management Framework)
+
+MSBuild 4.0 не работает. с 16 версией работает Visual Studio Build Tools “ам же поставить разные SDK
+
+ѕоставить git
