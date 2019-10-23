@@ -2,25 +2,23 @@
 
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.6.0
 #r CakeSettingsHelper.dll
-using CakeSettingsHelper
+using CakeSettingsHelper;
 
 
-var settingsFile = @"Settings.json";
+var settingsFile = @"Settings.json"; //Здесь храним настройки
 var configuration = Argument("configuration", "Debug");
 
 
-var projectOutput="";
+var projectOutput=""; //Сюда складываем артефакты сборки
 
-//var buildDir = Directory(projectOutput) + Directory("/Build/");
-//var outDir = Directory(projectOutput) + Directory("/Publish/");
-
+//Загружаем настройки
 Task("LoadConfig")
 .Does(()=>{
    SettingsHelper mysettings = new SettingsHelper(settingsFile);
-   projectOutput = mysettings.GetSettingValue("OutputDir");
+   projectOutput = mysettings.GetSettingValue("OutputDir"); //Парсим файл настроек для получения директории для артефактов
     if(projectOutput == null)
     {
-        throw new Exception("Output directory error");
+        throw new Exception("Output directory error"); //если не парсится то что-то не так
     }
     else
     {
@@ -29,6 +27,7 @@ Task("LoadConfig")
 
 });
 
+//Отчищаем директорию артефактов от прежних сборок
 Task("Clean")
 .IsDependentOn("LoadConfig")
 .Does(()=>{
@@ -36,12 +35,14 @@ Task("Clean")
     CleanDirectory(projectOutput);
 });
 
+//Востанавливаем нугеты
 Task("RestoreNugets")
 .IsDependentOn("Clean")
 .Does(() =>{
     NuGetRestore(@"..\project\Pacman.sln");
 });
 
+//Собираем проект
 Task("Build")
 .IsDependentOn("RestoreNugets")
 .Does(() =>{
@@ -53,12 +54,14 @@ Task("Build")
 
 });
 
+//Проганяем на тесты
 Task("RunTests")
 .IsDependentOn("Build")
 .Does(()=>{
  NUnit3(@"..\project\UnitTests\bin\" + configuration + @"\UnitTests.dll");
 });
 
+//Копируем артефакты сборки в выходную директорию
 Task("Output")
 .IsDependentOn("RunTests")
 .Does(()=>{

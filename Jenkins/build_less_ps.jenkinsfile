@@ -3,6 +3,7 @@ pipeline{
     stages{
         stage("Cleaning"){
             steps{
+                echo "======== cleaning========"
                 cleanWs()
             }
         }
@@ -10,6 +11,15 @@ pipeline{
             steps{
                 echo "====++++Cloning from GitHub++++===="
                 git branch: 'master', url: 'https://github.com/metallage/epamtest.git' 
+            }
+            post{
+                
+                success{
+                    echo "========Successfully cloned========"
+                }
+                failure{
+                    echo "========Cloning failed========"
+                }
             }
         }
         stage("Preparing Cake")        {
@@ -24,14 +34,12 @@ pipeline{
                 powershell(returnStdout: false, script:  '.\\cake\\build.ps1 -Script ".\\cake\\build.cake"')
             }
             post{
-                always{
-                    echo "========always========"
-                }
+                
                 success{
-                    echo "========A executed successfully========"
+                    echo "========Build executed successfully========"
                 }
                 failure{
-                    echo "========A execution failed========"
+                    echo "========Build execution failed========"
                 }
             }
         }
@@ -43,15 +51,15 @@ pipeline{
         }
     }
     post{
-        always{
-            echo "========always cleaning========"
-             
-        }
+        
         success{
             echo "========pipeline executed successfully ========"
+            echo "======== cleaning========"
+            cleanWs()
         }
         failure{
             echo "========pipeline execution failed========"
         }
     }
+    
 }

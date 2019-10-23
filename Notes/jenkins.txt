@@ -4,4 +4,10 @@
 
 MSBuild 4.0 не работает. с 16 версией работает Visual Studio Build Tools Там же поставить разные SDK
 
-Поставить git
+Поставить git??
+
+Итого
+1. Поставить Windows Management Framework для PowerShell 5.1
+2. Поставить Visual Studio Build Tools для MSBuild и DotNetSDK 4.6-4.8
+3. Поставить jenkins
+4. Поставить плагин NUnit для Jenkins
