@@ -1,0 +1,57 @@
+pipeline{
+    agent any
+    stages{
+        stage("Cleaning"){
+            steps{
+                cleanWs()
+            }
+        }
+        stage("LoadingSource"){
+            steps{
+                echo "====++++Cloning from GitHub++++===="
+                git branch: 'master', url: 'https://github.com/metallage/epamtest.git' 
+            }
+        }
+        stage("Preparing Cake")        {
+            steps{
+                echo "====++++Creating build.ps1++++===="
+                powershell (returnStdout: false, script: '.\\powershell\\bootstrap_cake.ps1')
+            }
+        }        
+        stage("Build"){
+            steps{
+                echo "========executing Build========"
+                powershell(returnStdout: false, script:  '.\\cake\\build.ps1 -Script ".\\cake\\build.cake"')
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
+            }
+        }
+        stage("Publish test reports"){
+            steps{
+                echo "Serching in 'Cake\\TestResult.xml'"
+                nunit testResultsPattern: 'Cake\\TestResult.xml'
+            }
+        }
+    }
+    post{
+        always{
+            echo "========always cleaning========"
+             
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
+}
