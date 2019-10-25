@@ -1,4 +1,4 @@
-$CakeFiles = @("build.cake", "Settings.json", "CakeSettingsHelper.dll", "CakeSettingsHelper.deps.json")
+$CakeFiles = @("build.cake", "Settings.json", "CakeSettingsHelper.dll")
 $CakeDir = "cake"
 
 $DirExists = Test-Path -Path $CakeDir
