@@ -1,8 +1,0 @@
-Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile build.ps1
-Устанавливает бутстрапер для тортика
-
-Set-ExecutionPolicy RemoteSigned -Scope Process
-Права на выполнение скриптов
-
-Unblock-File path\to\build.ps1
-если файл таки заблочило
