@@ -12,7 +12,7 @@ if($DirExists -eq "True")
         $FileExists = Test-Path -Path $CakeFile
         if($FileExists -ne "True")
         {
-            throw "${CakeFile} не найден!!!" 
+            throw $CakeFile + " не найден!!!" 
             exit 1
         }
     }
@@ -21,6 +21,6 @@ if($DirExists -eq "True")
 }
 else 
 {
-    throw "${CakeDir} не обнаружена!!!" 
+    throw $CakeDir+ " не обнаружена!!!" 
     exit 1
 }
