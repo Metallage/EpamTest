@@ -21,6 +21,6 @@ if($DirExists -eq "True")
 }
 else 
 {
-    trow "${CakeDir} не обнаружена!!!" 
+    throw "${CakeDir} не обнаружена!!!" 
     exit 1
 }
