@@ -54,7 +54,7 @@ Task("Build")
 
 });
 
-//Проганяем на тесты
+//Прогоняем на тесты
 Task("RunTests")
 .IsDependentOn("Build")
 .Does(()=>{
