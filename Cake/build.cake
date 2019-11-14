@@ -50,7 +50,8 @@ Task("Build")
     .SetConfiguration(configuration)
     .SetVerbosity(Verbosity.Minimal)
     .WithTarget("build")
-    .WithProperty("TreatWarningsAsErrors", "false"));
+    .WithProperty("TreatWarningsAsErrors", "false")
+    .WithConsoleLoggerParameter("Encoding.UTF-8"));
 
 });
 
